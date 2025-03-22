@@ -6,7 +6,7 @@ This is a simple **Login Page** for the University Learning Management System (L
 
 **Note**: This module is currently a **static frontend** without any backend functionality. It only includes the layout, styling, and basic user interface (UI) elements.
 
-<img src="images/login_page_screenshot.png" alt="Login Page ">
+<img src="images/login_page_screenshot.PNG" alt="Login Page ">
 
 ## Features
 - **Responsive Design**: Fully responsive layout for both desktop and mobile devices.
