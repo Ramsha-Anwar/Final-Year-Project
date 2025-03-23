@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student LMS Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 768px) {
+            #sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: auto;
+                transform: none !important;
+                z-index: 50;
+                padding: 0.5rem;
+            }
+
+            #sidebar nav ul {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+            }
+
+            #sidebar nav ul li {
+                margin: 0;
+            }
+
+            #sidebar h2, #toggleSidebar {
+                display: none;
+            }
+
+            #mainContent {
+                margin-left: 0 !important;
+                margin-bottom: 4rem;
+                padding-bottom: 60px;
+            }
+
+            .mobile-nav-icon {
+                display: block;
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .mobile-nav-text {
+                font-size: 0.75rem;
+            }
+
+            #sidebar nav ul li a {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar/Mobile Bottom Nav -->
+        <aside id="sidebar" class="w-64 bg-blue-900 text-white p-5 space-y-6 h-screen fixed transition-transform transform translate-x-0">
+            <div class="flex items-center justify-between mb-6 hidden md:flex">
+                <h2 class="text-xl font-semibold">LMS Dashboard</h2>
+                <button id="toggleSidebar" class="p-2 rounded-lg hover:bg-blue-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <nav>
+                <ul class="space-y-4 md:space-y-2">
+                    <li>
+                        <a href="#" data-section="dashboard" class="block p-2 hover:bg-blue-700 rounded active">
+                            <i class="fas fa-home mobile-nav-icon"></i>
+                            <span class="mobile-nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="courses" class="block p-2 hover:bg-blue-700 rounded">
+                            <i class="fas fa-book mobile-nav-icon"></i>
+                            <span class="mobile-nav-text">Courses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="assignments" class="block p-2 hover:bg-blue-700 rounded">
+                            <i class="fas fa-tasks mobile-nav-icon"></i>
+                            <span class="mobile-nav-text">Tasks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="timetable" class="block p-2 hover:bg-blue-700 rounded">
+                            <i class="fas fa-calendar mobile-nav-icon"></i>
+                            <span class="mobile-nav-text">Schedule</span>
+                        </a>
+                    </li>
+                    <li><a href="#" data-section="notifications" class="block p-2 hover:bg-blue-700 rounded">Notifications</a></li>
+                    <li><a href="#" data-section="tools" class="block p-2 hover:bg-blue-700 rounded">Tools</a></li>
+                    <li><a href="#" data-section="settings" class="block p-2 hover:bg-blue-700 rounded">Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="flex-1 p-6 ml-64 transition-all duration-300 md:ml-64" id="mainContent">
+            <!-- Navbar -->
+            <div class="fixed top-0 left-0 right-0 z-10 flex justify-between items-center mb-4 bg-white p-4 shadow md:relative md:mb-4">
+                <h1 class="text-xl md:text-2xl font-bold">Welcome, Student!</h1>
+                <!-- Profile Dropdown Section in Navbar -->
+                <div class="relative">
+                    <button class="flex items-center space-x-4 focus:outline-none" id="profileDropdownButton">
+                        <img src="https://via.placeholder.com/40" alt="Profile Picture" class="w-8 h-8 md:w-10 md:h-10 rounded-full">
+                        <div class="hidden md:block">
+                            <h3 class="text-lg font-semibold">John Doe</h3>
+                            <p class="text-sm text-gray-600">Student</p>
+                        </div>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Notifications</a>
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Settings</a>
+                        <a href="#" class="block px-4 py-2 text-red-600 hover:bg-gray-200">Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add padding to content to prevent overlap with fixed navbar on mobile -->
+            <div class="pt-16 md:pt-0">
+                <!-- Content Sections -->
+                <div id="dashboard-section" class="content-section">
+                    <!-- Courses Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold">Course 1</h3>
+                            <p class="text-gray-600">Progress: <span class="font-bold">60%</span></p>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold">Course 2</h3>
+                            <p class="text-gray-600">Progress: <span class="font-bold">40%</span></p>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Assignments Section -->
+                    <div class="mt-6">
+                        <h2 class="text-xl font-semibold mb-2">Upcoming Assignments</h2>
+                        <ul class="bg-white p-4 rounded-lg shadow">
+                            <li class="border-b py-2">Assignment 1 - Due: March 25</li>
+                            <li class="border-b py-2">Assignment 2 - Due: March 30</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Tools Section -->
+                    <div class="mt-6">
+                        <h2 class="text-xl font-semibold mb-2">Tools</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <h3 class="text-lg font-semibold">Calculator</h3>
+                                <p class="text-gray-600">Quick access to a calculator.</p>
+                                <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">Open</button>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <h3 class="text-lg font-semibold">Notes</h3>
+                                <p class="text-gray-600">Take and save notes easily.</p>
+                                <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">Open</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timetable Section -->
+                    <div class="mt-6">
+                        <h2 class="text-xl font-semibold mb-2">Timetable</h2>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Day</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">Monday</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">9:00 AM - 10:00 AM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">Mathematics</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">Tuesday</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">10:00 AM - 11:00 AM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">Physics</td>
+                                    </tr>
+                                    <!-- Add more rows as needed -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="courses-section" class="content-section hidden">
+                    <h2 class="text-2xl font-bold mb-4">Courses</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold">Mathematics</h3>
+                            <p class="text-gray-600">Advanced Calculus</p>
+                            <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">View Course</button>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold">Physics</h3>
+                            <p class="text-gray-600">Quantum Mechanics</p>
+                            <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">View Course</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="assignments-section" class="content-section hidden">
+                    <h2 class="text-2xl font-bold mb-4">Assignments</h2>
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold">All Assignments</h3>
+                            <div class="mt-4 space-y-4">
+                                <div class="border-b pb-4">
+                                    <h4 class="font-medium">Mathematics Assignment</h4>
+                                    <p class="text-sm text-gray-600">Due: March 25</p>
+                                    <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">Submit</button>
+                                </div>
+                                <div class="border-b pb-4">
+                                    <h4 class="font-medium">Physics Assignment</h4>
+                                    <p class="text-sm text-gray-600">Due: March 30</p>
+                                    <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="notifications-section" class="content-section hidden">
+                    <h2 class="text-2xl font-bold mb-4">Notifications</h2>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <div class="space-y-4">
+                            <div class="border-b pb-4">
+                                <p class="font-medium">New Assignment Posted</p>
+                                <p class="text-sm text-gray-600">Mathematics - Due March 25</p>
+                            </div>
+                            <div class="border-b pb-4">
+                                <p class="font-medium">Course Material Updated</p>
+                                <p class="text-sm text-gray-600">Physics - New lecture notes available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tools-section" class="content-section hidden">
+                    <div class="mt-6">
+                        <h2 class="text-xl font-semibold mb-2">Tools</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <h3 class="text-lg font-semibold">Calculator</h3>
+                                <p class="text-gray-600">Quick access to a calculator.</p>
+                                <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">Open</button>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <h3 class="text-lg font-semibold">Notes</h3>
+                                <p class="text-gray-600">Take and save notes easily.</p>
+                                <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">Open</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settings-section" class="content-section hidden">
+                    <h2 class="text-2xl font-bold mb-4">Settings</h2>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span>Email Notifications</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Dark Mode</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timetable Section -->
+                <div id="timetable-section" class="content-section hidden">
+                    <h2 class="text-2xl font-bold mb-4">Class Timetable</h2>
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-4">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Monday</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tuesday</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Wednesday</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Thursday</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Friday</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4">9:00 - 10:00</td>
+                                            <td class="px-6 py-4">Mathematics</td>
+                                            <td class="px-6 py-4">Physics</td>
+                                            <td class="px-6 py-4">Chemistry</td>
+                                            <td class="px-6 py-4">Biology</td>
+                                            <td class="px-6 py-4">English</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4">10:00 - 11:00</td>
+                                            <td class="px-6 py-4">Physics</td>
+                                            <td class="px-6 py-4">Chemistry</td>
+                                            <td class="px-6 py-4">Mathematics</td>
+                                            <td class="px-6 py-4">English</td>
+                                            <td class="px-6 py-4">Biology</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add FontAwesome for icons -->
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+    <!-- Add Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.getElementById('profileDropdownButton').addEventListener('click', function() {
+            document.getElementById('profileDropdown').classList.toggle('hidden');
+        });
+        
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            sidebar.classList.toggle('-translate-x-64');
+            mainContent.classList.toggle('ml-0');
+            mainContent.classList.toggle('ml-64');
+        });
+
+        // Section switching functionality
+        document.querySelectorAll('[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+                
+                // Show selected section
+                document.getElementById(sectionId + '-section').classList.remove('hidden');
+                
+                // Update active state of nav links
+                document.querySelectorAll('[data-section]').forEach(link => {
+                    link.classList.remove('active', 'bg-blue-700');
+                });
+                this.classList.add('active', 'bg-blue-700');
+            });
+        });
+
+        // Show dashboard by default
+        document.querySelector('[data-section="dashboard"]').click();
+    </script>
+</body>
+</html>
